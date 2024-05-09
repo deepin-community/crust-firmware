@@ -1,0 +1,42 @@
+#
+# Copyright © 2020-2022 The Crust Firmware Authors.
+# SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0-only
+#
+
+config MFD_AXP20X
+	bool "Multi-function driver for X-Powers PMICs"
+	depends on I2C || RSB
+	help
+		This driver enables both the power sequencing and
+		voltage regulator functionality of an AXP2xx or AXP8xx
+		series power management IC.
+
+comment "X-Powers PMIC will communicate via I2C"
+	depends on MFD_AXP20X && !RSB
+
+comment "X-Powers PMIC will communicate via RSB"
+	depends on MFD_AXP20X && RSB
+
+choice
+	bool "X-Powers PMIC variant"
+	depends on MFD_AXP20X
+	default MFD_AXP223 if PLATFORM_A23
+	default MFD_AXP803 if PLATFORM_A64
+	default MFD_AXP805 if PLATFORM_H6
+
+config MFD_AXP223
+	bool "AXP223"
+	help
+		This PMIC is usually paired with the A23/A33 SoC.
+
+config MFD_AXP803
+	bool "AXP803"
+	help
+		This PMIC is usually paired with the A64 SoC.
+
+config MFD_AXP805
+	bool "AXP805"
+	help
+		This PMIC is usually paired with the H6 SoC.
+
+endchoice

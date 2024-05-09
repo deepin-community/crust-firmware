@@ -1,0 +1,123 @@
+#
+# Copyright © 2017-2022 The Crust Firmware Authors.
+# SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0-only
+#
+
+menu "Debugging options"
+
+config ASSERT
+	bool "Enable runtime assertion checking"
+	default y
+	help
+		Enable assert() logic to validate assumptions and find
+		bugs at runtime. If in doubt, say Y.
+
+config ASSERT_VERBOSE
+	bool "Verbose logging of assertion failures"
+	depends on ASSERT
+	help
+		When an assertion fails, print detailed information
+		about it to the console. This includes the expression
+		that was checked, as well as the file and line number of
+		the call to assert().
+
+		The address of the failed assertion is printed with or
+		without this option. Since all of the other details can
+		be derived from the address and debug info (see below),
+		enabling this option is only necessary when debug info
+		is unavailable.
+
+		Note that this option significantly increases the size
+		of the final firmware binary. If in doubt, say N.
+
+config COMPILE_TEST
+	bool "Allow compiling a firmware that does not run"
+	help
+		Some combinations of options may not make sense or may
+		not produce a functional firmware, for example if the
+		firmware becomes too large, or if it contains multiple
+		drivers for the same piece of hardware.
+
+		This is mostly useful for development and automated
+		testing. Users should say N.
+
+config DEBUG_INFO
+	bool "Compile the firmware with debug info"
+	default y
+	help
+		When compiling the firmware, generate debug information
+		for use with gdb. These are stripped out of the final
+		firmware binary, so this option does not affect the
+		loaded firmware size. If in doubt, say Y.
+
+config DEBUG_LOG
+	bool "Print additional debug-level log messages"
+	help
+		This enables the debug() logging macro to print verbose
+		informational messages that may aid in debugging.
+
+config DEBUG_MONITOR
+	bool "Provide an interactive debug monitor while off/asleep"
+	help
+		While the system is off or asleep, accept simple commands
+		on the serial port. Parsing is extremely basic, and line
+		editing is not supported. Available commands are:
+			m <address> [value] -- read/write memory
+			w -- trigger wakeup
+
+		With a PMIC present, additional commands are supported:
+			p <address> [value] -- read/write PMIC registers
+
+config DEBUG_MONITOR_PMIC
+	bool
+	depends on DEBUG_MONITOR
+	default MFD_AXP20X
+
+config DEBUG_PRINT_BATTERY
+	bool "Print battery consumption periodically while off/asleep"
+	depends on MFD_AXP223 || MFD_AXP803
+	help
+		While the system is off or asleep and the battery is
+		discharging, print the battery voltage, discharge
+		current, and calculated power usage every 30 seconds.
+
+config DEBUG_PRINT_LATENCY
+	bool "Print average latency after each state transition"
+	help
+		After each system state transition, calculate the
+		average latency of the main loop, in AR100 clock cycles.
+		The latency will be printed after the firmware has
+		performed 10000 iterations in that state.
+
+config DEBUG_PRINT_SPRS
+	bool "Print the contents of Special Purpose Registers at boot"
+	depends on ARCH_OR1K
+	help
+		The OpenRISC 1000 architecture defines various Special
+		Purpose Registers, or SPRs, that describe the particular
+		CPU implementation. Enable this option to print a subset
+		of these SPRs in a human-readable format during boot.
+
+config DEBUG_RECORD_STEPS
+	bool "Record steps of the suspend/resume process in the RTC"
+	depends on !PLATFORM_A83T # No RTC
+	help
+		Record the start of various steps of the suspend and
+		resume processes in one of the RTC's general purpose
+		registers. This provides an approximation of what the
+		firmware was doing at the time of a hang. The last step
+		will remain available in the RTC until a clean shutdown
+		or reboot, or until power is removed.
+
+config DEBUG_VERIFY_DRAM
+	bool "Verify DRAM contents after controller resume"
+	help
+		After reinitializing the DRAM controller during system
+		resume, verify that DRAM contents were preserved via a
+		simple checksum.
+
+		The algorithm is very simplistic, and only a small
+		portion of DRAM is checked, so there is no guarantee
+		that corruption will be detected.
+
+endmenu

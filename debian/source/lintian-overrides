@@ -1,0 +1,5 @@
+# License is in Reference field (see bug#786450)
+missing-license-paragraph-in-dep5-copyright gpl-2 [debian/copyright:*]
+missing-license-paragraph-in-dep5-copyright gpl-3\+ [debian/copyright:*]
+missing-license-text-in-dep5-copyright GPL-2 [debian/copyright:*]
+missing-license-text-in-dep5-copyright GPL-3\+ [debian/copyright:*]
