@@ -1,0 +1,60 @@
+#!/usr/bin/python3
+
+import sys
+
+platforms = (
+
+    # Jonas Smedegaard <dr@jones.dk>
+    # maybe Rodrigo Exterckötter Tjäder <rodrigo@tjader.xyz>
+    'a64-olinuxino',
+
+    # Jonas Smedegaard <dr@jones.dk>
+    # Philip Rinn <rinni@inventati.org>
+    'a64-olinuxino-emmc',
+
+    # Sunil Mohan Adapa <sunil@medhas.org>
+    'pine64-lts',
+
+    # Vagrant Cascadian <vagrant@debian.org>
+    'pine64_plus',
+
+    # Vagrant Cascadian <vagrant@debian.org>
+    'pinebook',
+
+    # Arnaud Ferraris <arnaud.ferraris@gmail.com>
+    # maybe Arnaud Ferraris <arnaud.ferraris@collabora.com> (1.1, 1.2)
+    # maybe Benoit Delcour <benoit.delcour@gmail.com> (1.2)
+    'pinephone',
+
+    # Arnaud Ferraris <arnaud.ferraris@gmail.com>
+    'pinetab',
+
+)
+
+# Detect duplicate defconfig files.
+# With any argument, list platforms that debian/rules must actually build.
+# Without arguments, provide arguments for dh_link, linking each
+# duplicate to the built platform.
+
+# pylint debian/links --disable=missing-module-docstring
+# mypy debian/links && rm -fr .mypy_cache/
+# debian/links
+# debian/links arg
+
+# Map a defconfig to the platforms with this configuration.
+platforms_per_config: dict[bytes, list[str]] = {}
+
+for platform in platforms:
+    path = f'configs/{platform}_defconfig'
+# Variant building all available platforms:
+# for path in glob.glob('configs/*_defconfig'):
+#     platform = path[8:-10]
+    with open(path, 'br') as defconfig:
+        platforms_per_config.setdefault(defconfig.read(), []).append(platform)
+
+if len(sys.argv) == 1:
+    for built, *links in platforms_per_config.values():
+        for link in links:
+            print(f'usr/lib/crust-firmware/{built}.bin usr/lib/crust-firmware/{link}.bin')
+else:
+    print(*(duplicates[0] for duplicates in platforms_per_config.values()))

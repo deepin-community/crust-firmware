@@ -1,4 +1,24 @@
 #!/usr/bin/make -f
 
+verbose := $(if $(filter terse,$(DEB_BUILD_OPTIONS)),,V=1)
+
 %:
 	dh $@
+
+# The upstream build system is designed for people building only the
+# platform matching their hardware.
+# Debian wants to support several platforms, but build and install
+# only one representant per defconfig.
+# The supported platforms are listed in debian/links.
+# The following list contains the actually built platforms.
+platforms := $(shell debian/links arg)
+# The same script installs aliases with dh_link (hence the name).
+
+override_dh_auto_build: $(platforms)
+$(platforms):
+	dh_auto_build -- $(verbose) TGT=build/$@ $@_defconfig
+	dh_auto_build -- $(verbose) TGT=build/$@ CROSS_COMPILE=or1k-elf- scp
+  # Remove execution permissions set by GCC.
+  # Move to the parent directory for easyer installation.
+  # Rename the binary file after the platform.
+	install -m644 build/$@/scp.bin build/$@.bin

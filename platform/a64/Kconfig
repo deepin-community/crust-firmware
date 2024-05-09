@@ -1,0 +1,21 @@
+#
+# Copyright © 2017-2022 The Crust Firmware Authors.
+# SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0-only
+#
+
+if PLATFORM_A64
+
+choice
+	bool "SoC"
+
+config SOC_A64
+	bool "A64"
+	select HAVE_R_RSB
+	select HAVE_UART4
+
+config SOC_H5
+	bool "H5"
+
+endchoice
+
+endif

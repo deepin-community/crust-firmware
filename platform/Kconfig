@@ -1,0 +1,104 @@
+#
+# Copyright © 2017-2022 The Crust Firmware Authors.
+# SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0-only
+#
+
+config PLATFORM
+	string
+	default "a23"  if PLATFORM_A23
+	default "a64"  if PLATFORM_A64
+	default "a83t" if PLATFORM_A83T
+	default "h3"   if PLATFORM_H3
+	default "h6"   if PLATFORM_H6
+
+choice
+	prompt "Platform selection"
+
+config PLATFORM_A23
+	bool "A23/A33"
+	depends on ARCH_OR1K
+	select HAVE_R_RSB
+
+config PLATFORM_A64
+	bool "A64/H5"
+	depends on ARCH_OR1K
+	select HAVE_DRAM_SUSPEND
+	select HAVE_HDMI
+	select HAVE_R_CIR
+	select HAVE_R_TWD
+
+config PLATFORM_A83T
+	bool "A83T"
+	depends on ARCH_OR1K
+	select HAVE_HDMI
+	select HAVE_R_CIR
+	select HAVE_R_RSB
+	select HAVE_R_TWD
+	select HAVE_UART4
+
+config PLATFORM_H3
+	bool "H3"
+	depends on ARCH_OR1K
+	select HAVE_DRAM_SUSPEND
+	select HAVE_HDMI
+	select HAVE_R_CIR
+	select HAVE_R_TWD
+
+config PLATFORM_H6
+	bool "H6"
+	depends on ARCH_OR1K
+	select HAVE_DCXO
+	select HAVE_DRAM_SUSPEND
+	select HAVE_HDMI
+	select HAVE_R_CIR
+	select HAVE_R_RSB
+	select HAVE_R_TWD
+
+endchoice
+
+source "a23/Kconfig"
+source "a64/Kconfig"
+
+config HAVE_DCXO
+	bool
+	help
+		Select this option on platforms with a DCXO in the RTC
+		domain in addition to X24M pads in the PLL domain.
+
+config HAVE_DRAM_SUSPEND
+	bool
+	help
+		Select this option on platforms with the ability to
+		suspend the DRAM controller.
+
+config HAVE_HDMI
+	bool
+	help
+		Select this option on platforms with an HDMI controller.
+
+config HAVE_R_CIR
+	bool
+	help
+		Select this option on platforms with a consumer infrared
+		(CIR) controller.
+
+config HAVE_R_I2C
+	bool
+	default y
+	help
+		Select this option on platforms with an R_I2C controller.
+
+config HAVE_R_RSB
+	bool
+	help
+		Select this option on platforms with an RSB controller.
+
+config HAVE_R_TWD
+	bool
+	help
+		Select this option on platforms with a trusted watchdog.
+
+config HAVE_UART4
+	bool
+	help
+		Select this option on platforms with a UART4.

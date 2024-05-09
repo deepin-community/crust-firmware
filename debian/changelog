@@ -1,5 +1,136 @@
-template-repository (1.0-1) unstable; urgency=medium
+crust-firmware (0.6-1) unstable; urgency=medium
 
-  * Initial release
+  * New upstream release.
+    Remove applied patches and now redundant documentation.
 
- -- Tsic404 <liuheng@deepin.org>  Sat, 28 Jan 2023 13:46:49 +0800
+ -- Nicolas Boulenguez <nicolas@debian.org>  Sat, 02 Sep 2023 15:21:32 +0000
+
+crust-firmware (0.5.1.20230301-1) unstable; urgency=medium
+
+  [ Jonas Smedegaard ]
+  * fix source helper tool copyright-check:
+    + adjust to work with newer Path::Tiny 0.144
+    + avoid insecure shell expansion
+  * update copyright info: update coverage
+
+  [ Nicolas Boulenguez ]
+  * Detect duplicate defconfigs, make new defconfigs easyer to forward
+  * New upstream snapshot based on commit c308a504.
+    Refresh README.Debian, copyright and patches.
+  * Remove teres_i until there is a tester again
+  * Forward patches
+
+ -- Nicolas Boulenguez <nicolas@debian.org>  Thu, 31 Aug 2023 15:35:24 +0000
+
+crust-firmware (0.5-3) unstable; urgency=medium
+
+  * Standards-Version: 4.6.2.
+
+  [ Jelmer Vernooĳ <jelmer@debian.org> ]
+  * Update lintian override info format in d/source/lintian-overrides on line
+    2-5.
+  * Set upstream metadata fields: Bug-Submit, Repository-Browse, Repository.
+
+ -- Nicolas Boulenguez <nicolas@debian.org>  Thu, 22 Dec 2022 15:17:54 +0000
+
+crust-firmware (0.5-2) unstable; urgency=medium
+
+  [ Jonas Smedegaard ]
+  * note Philip Rinn as tester in source
+
+  * Link with --no-warn-rwx-segments. Closes: #1015057
+  * watch: remove unneeded filenamemangle option
+  * upstream/metadata: basic information about upstream contacts
+  * generic_platforms.patch: not forwarded
+  * Standards-Version: 4.6.1
+  * fix lintian override for wrong-section-according-to-package-name
+  * Update copyright years
+
+ -- Nicolas Boulenguez <nicolas@debian.org>  Thu, 04 Aug 2022 12:43:57 +0200
+
+crust-firmware (0.5-1) unstable; urgency=medium
+
+  [ upstream ]
+  * new release
+
+  [ Jonas Smedegaard ]
+  * update watch file:
+    + fix and gneralize filename mangling
+    + set (currently unused) dversionmangle=auto
+    + use substitution strings
+  * add patch 2001 to add configs for generic platforms
+  * build generic A64 targets,
+    and symlink those for each specific platforms
+  * enable platforms a64-olinuxino a64-olinuxino-emmc pine64-lts,
+    and mention potential testers in source
+  * add README.Debian,
+    covering linux cmdline option clk_ignore_unused
+  * enable cec module
+    for platforms with seemingly fully wired HDMI connector
+    (notably omitting pinebook and teres_i);
+    document HDMI CEC and serial port support in README.Debian
+
+ -- Jonas Smedegaard <dr@jones.dk>  Tue, 16 Nov 2021 19:25:55 +0100
+
+crust-firmware (0.4-3) unstable; urgency=medium
+
+  [ Nicolas Boulenguez ]
+  * update copyright info: update lintian overrides
+
+  [ Jonas Smedegaard ]
+  * drop patch 0001,
+    and instead reuse identically compiled pinebook binary
+  * reuse pinebook binary for teres_i
+  * update copyright info:
+    + add preferred upstream contact
+  * update copyright info: use Reference field (not License-Reference)
+
+ -- Jonas Smedegaard <dr@jones.dk>  Thu, 07 Oct 2021 22:43:08 +0200
+
+crust-firmware (0.4-2) unstable; urgency=medium
+
+  [ Jonas Smedegaard ]
+  * watch file: add usage comment
+  * declare compliance with Debian Policy 4.6.0
+  * improve source helper script copyright-check
+
+ -- Jonas Smedegaard <dr@jones.dk>  Mon, 06 Sep 2021 21:25:26 +0200
+
+crust-firmware (0.4-1) experimental; urgency=medium
+
+  [ upstream ]
+  * new release
+
+  [ Arnaud Ferraris ]
+  * add patch 0001 to support PineTab
+
+  [ Nicolas Boulenguez ]
+  * update metadata for patch 0001
+
+  [ Jonas Smedegaard ]
+  * fix exclude upstream git-ignore hints from source git
+  * copyright info:
+    + add Licence-Grant fields
+    + use Licence-Reference field;
+      override lintian (see bug#786450)
+    + add source helper script copyright-check
+
+ -- Jonas Smedegaard <dr@jones.dk>  Sat, 05 Jun 2021 13:38:18 +0200
+
+crust-firmware (0.3-2) experimental; urgency=medium
+
+  [ Nicolas Boulenguez ]
+  * set Multi-Arch: foreign,
+    allowing an accurate list of build-dependencies for the u-boot package
+    closes: Bug#988257, thanks to Vagrant Cascadian
+
+  [ Jonas Smedegaard ]
+  * add git-buildpackage settings to source package
+
+ -- Jonas Smedegaard <dr@jones.dk>  Tue, 11 May 2021 17:00:53 +0200
+
+crust-firmware (0.3-1) experimental; urgency=medium
+
+  * Initial packaging. Closes: #979326.
+
+ -- Nicolas Boulenguez <nicolas@debian.org>  Mon, 21 Dec 2020 07:50:27 +0000
